@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.alivin.staffmanagementsystem.dao.EmployeeMapper">
+
+    <select id="getAll" resultType="com.alivin.staffmanagementsystem.pojo.Employee">
+        SELECT eid, ename, email, gender, createTime, updateTime, dname
+        FROM employee AS e
+        LEFT JOIN department AS d
+        ON d.id = e.did;
+    </select>
+
+
+    <select id="getEmployeeById" parameterType="integer" resultType="com.alivin.staffmanagementsystem.pojo.Employee">
+        SELECT eid, ename, email, gender, createTime, updateTime, did, dname
+        FROM employee AS e
+        LEFT JOIN department AS d
+        ON d.id = e.did
+        WHERE e.eid = #{eid};
+    </select>
+
+    <insert id="addEmployee" parameterType="com.alivin.staffmanagementsystem.pojo.Employee">
+        INSERT INTO employee (ename, email, gender, createTime, updateTime, did)
+        VALUES (#{ename}, #{email}, #{gender}, now(), now(), #{did})
+    </insert>
+
+    <update id="updateEmployee" parameterType="com.alivin.staffmanagementsystem.pojo.Employee">
+        UPDATE employee
+        SET ename = #{ename}, email = #{email}, gender = #{gender}, createTime = #{createTime}, did = #{did}
+        WHERE eid = #{eid};
+    </update>
+
+    <delete id="deleteEmployee" parameterType="integer">
+        DELETE FROM employee
+        WHERE eid = #{eid};
+    </delete>
+
+</mapper>
